@@ -1,0 +1,20 @@
+[
+  {
+  "id": 2,
+  "name": "John Doe",
+  "company": "123 Designs",
+  "phone": "123 45 678"
+  },
+  {
+  "id": 2,
+  "name": "Stevene Smith",
+  "company": "Hello Productions",
+  "phone": "678 45 123"
+  },
+  {
+  "id": 3,
+  "name": "Tara Williams",
+  "company": "Traversy Media",
+  "phone": "876 54 321"
+  }
+]
