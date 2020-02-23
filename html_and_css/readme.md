@@ -1,0 +1,109 @@
+# Modern HTML & CSS From The Beginning with Brad Traversy
+
+[You can find the course on udemy](https://www.udemy.com/course/modern-html-css-from-the-beginning/)
+
+## Content
+
+* [The Internet - how it works](#introduction)
+* [About HTML](#html)
+* [About CSS](#css)
+* [Meta Tags](#meta-tags)
+* [Typography](#typography)
+* [Links and images](#links-and-images)
+* [Semantic Tags](#semantic-tags)
+* [CSS syntax](#css-syntax)
+* [Fonts in CSS](#fonts-in-css)
+
+## Introduction
+
+* A global network of computers
+* Each computer/router has an IP Address 161.158.0.1
+  * Computer IP is private for the home network.
+  * Router IP is open for the web.
+* Computers talk to each other using the **TCP/IP** protocol
+* **HTTP** handles web traffic (requests/responses)
+* Websites/webpages are files stored on computers that run a piece of software called a web server (Apache, Nginx, etc).
+* Hosting companies provide space on a server for your website
+* Domain names can be purchased from registrars and linked to your hosing account/web server.
+* DNS is used to map IP addresses to domain names.
+
+![Process of Loading a Webpage](static/loading.png)
+
+## The roles of HTML and CSS
+
+### HTML
+
+* **Hypertext Markup Language**
+* HTML is _not_ a programming langugae. You cannot make calculation and such thing.
+* Markup for creating webpages / documents.
+* HTML is extremely important & relevant but is also just the beginning.
+
+### CSS
+
+* **Cascading Style Sheet**
+* Styling/Stylesheet Language
+* Used for styling HTML elements
+* Can be extended with Sass/Less
+
+## Meta tags
+
+Takes which isn't shown in the body
+
+* meta charset
+* meta viewport - make it responsive to different devices. (very important)
+* meta name="description" content="This is what shows up in the description of the website, f.eks on google search."
+* meta: name="keywords" content="web development, web design, etc"
+* meta: name="robots" content="NOINDEX, NOFOLLOW"
+  * Will make google or other search engines ignore your website.
+
+## Typography
+
+* h1 : tips use one h1 per page - due to search engines
+* h2
+* h3
+* h4
+* h5
+* h6
+* p : tips: lorem100 gives a text of 100 words.
+* strong : bold --> replaced b for bold, because html is not for styling.
+* em = emphasis : italic
+* br : line break
+* hr : line break with a horizontal rule
+* del
+
+## Links and Images
+
+* a tag is a link and href is required.
+
+## Semantic Tags
+
+Not only for design, but also for usability for people with disabilities.
+
+* header
+* footer
+* nav
+* main
+* section
+* article
+* aside
+
+## CSS syntax
+
+![CSS Syntax](static/css_syntax.png)
+
+## Fonts in CSS
+
+![Fonts that are default](static/fonts.png)
+
+These are available for everyone by default in their browsers.
+
+You can also use [google fonts](https://fonts.google.com/)
+
+Pointers:
+
+* Font-family: go for sans-serif they are cleaner see above.
+* Font-size: by default 16px
+* line-height: given in em, 1.6em is a good value.
+
+![CSS units](static/units.png)
+![CSS units cont.](static/more_units.png)
