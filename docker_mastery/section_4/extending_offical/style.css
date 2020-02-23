@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+}
+
+.puppy-show {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.puppy-show div img {
+    width: 150px;
+    height: 100px;
+}
+
+.more-content img {
+    width: 400px;
+    height: 250px;
+}

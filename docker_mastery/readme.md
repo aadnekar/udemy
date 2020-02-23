@@ -14,6 +14,10 @@
     * [Assignment](#docker-networks:-assignments)
 * [Container Images - where to find them and how to build them](#container-images)
   * [Docker Hub](#docker-hub)
+  * [Images and their Layers](#images-and-their-layers)
+  * [Image Tagging and Pushing to Docker Hub](#image-tagging-and-pushing-to-docker-hub)
+  * [Building Dockerfile](#building-dockerfile)
+* [Clean Yo System](#clean-yo-system)
 
 ## Docker Containers
 
@@ -175,3 +179,72 @@ Searching for images
   * When you want a product to go into production you almost always want to specify the exact version. This is for compatibiliy.
   * alpine tag means lightweight.
 * Another go-to is number of stars and number of pulls.
+
+### Images and Their Layers
+
+* Image layers
+* union file system
+* *history* and *inspect* commands
+* copy on write
+
+docker image history: *Show layers of changes made in image | docker history (old way)*\
+docker image inspect: *returns JSON metadata about the image | docker inspect (old way)*
+
+![The layered architecture](static/layered.png)
+
+The layered storage architecture of docker
+
+![How images work](static/layered_drawn.png)
+
+Note that each image starts out with an image with a unique SHA, identifying that specific image. This is how docker can identify if that image is already pulled, and thus if you pull it again you may use it cached instead of having to pull it down from docker hub again.\
+This also means that if you base a container on ubuntu more than one time, you use the same ubuntu base image for each container, thus it takes no more storage space than using just one ubuntu.\
+As you see in the picture above each image may be uniquely designed, but may still be built from the same cached base image.\
+This also happens for the same operations in the above stages, if you would perform the same operations on two different images it would only store the operation once, but use it for the two different images.\
+Copy on write: Happens when you run a container, then you copy the image it's based on and writes to that container during runtime.
+
+### Image Tagging and Pushing to Docker Hub
+
+* All about image tags
+* How to upload to Docker Hub
+* Image ID vs. Tag
+
+docker image tag: *assign one or more tags to an image | docker tag (old way)*\
+docker image push: *uploads changed layers to an image registry (default is Hub)*\
+docker login (server): *Defaults to logging in Hub, but you can override by adding server url*\
+docker logout: *always logout from shared machines or servers when done, to protect your account*\
+
+Images don't really have names, but they have (user)/(repo):(tag), with a default tag of 'latest'.\
+
+NOTE: when logging in to using *docker login* it uses the config.json file which you can find in:
+`C:/Users/(user_name)/.docker/config.json`
+
+If you upload an image with the same image ID, it doesn't bother to upload it, becuase the layers already exist. If it has a new tag, it just uploads the new tag with the same id.
+
+### Building dockerfile
+
+About the different layers, so each command in the dockerfile is a layer in the image.\
+List of common Dockerfile stanza (commands):
+
+* **FROM**: (required) specificies what image this dockerfile is based upon
+* **ENV**: (optional) defined environment variables
+* **RUN**: (optional) runs commands: using && is key to be able to execute several commands to fit inside one layer in the image.
+* **EXPOSE**: (optional) by default it does not expose any ports, but we may specify this here. However this does not expose ports from our host, that's what we do with the -p (--publish) command when we run the container.
+* **CMD**: (required) final command that is run everytime you run a container.
+* **WORKDIR**: (optional): when changing directory you should always use this command.
+* **COPY**: (optional): copy a file / directory from your source to the container
+
+The Dockerfile is a script of how to run an image. Because it cached the different layers, it doesn't need to install it anew when you run the script again later, unless you've changed a specific layer. This is what makes docker so fast for deployment, because if you only change the source code it's smart enough to have each layered stored and it makes the deployment very fast.
+
+The build will be "using cache" up until it detects a change in a given layer, then if there is a change in a layer it has to run be running that layer and every layer after that. Thus if there is a layer which change very often, say copying your source code, then that layer should be specified as late as possible in the Dockerfile.
+
+[Link to my solution of an assignment related to this topic](section_4/assignment)
+
+## Clean Yo System
+
+It's a good idea to keep your system clean and not let container, images and networks dangle around. Use these to clean up stopped processes:
+
+```docker image prune``` \
+to clean up just "dangling" images
+
+```docker system prune``` \
+to clean up everything (containers, images and networks)
