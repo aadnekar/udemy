@@ -18,6 +18,13 @@
   * [Image Tagging and Pushing to Docker Hub](#image-tagging-and-pushing-to-docker-hub)
   * [Building Dockerfile](#building-dockerfile)
 * [Clean Yo System](#clean-yo-system)
+* [Container Lifetime & Persistent Data](#container-lifetime-&-persistent-data)
+  * [Persistent Data: Data Volumes](#persistent-data:-data-volumes)
+  * [Printing working directory on different OS](#printing-working-directory-on-different-os)
+  * [Persistent Data: Bind Mounting](#persistent-data:-bind-mounting)
+  * [Persistent Data: Wrap up](#persistent-data:-wrap-up)
+  * [Assignment: Database Upgrades with Named Volumes](#assignment:-database-upgrades-with-named-volumes)
+  * [Assignment: Edit Code Running In Containers With Bind Mounts](#assignment:-edit-code-running-in-containers-with-bind-mounts)
 
 ## Docker Containers
 
@@ -248,3 +255,110 @@ to clean up just "dangling" images
 
 ```docker system prune``` \
 to clean up everything (containers, images and networks)
+
+## Container Lifetime & Persistent Data
+
+* Definint the problem of persistent data
+* Key concepts with containers: immutable, ephemereal
+* Learning and using Data Volumes
+* Learning and using Bind Mounts
+
+Brief information:
+
+* "Seperation of concerns": Do not mix application binaries and unique (persistent) data
+* Before data was persistent by default (on those servers)
+* Two ways to store data: Volumes and Bind Mounts
+* Volumes: make special location outside of container UFS
+* Bind Mounts: link container path to host path
+
+### Persistent Data: Data Volumes
+
+* Volumes need manual deletion. The data inside is particularily important (That's what we say by putting it there).
+* Volumes outlive the executables. (If you delete containers, they still persist).
+* Problem is that it may cluster up quickly if you make a lot of databases locally.
+
+Solution:
+named volumes: *Friendly way to assign volumes to containers*
+
+```docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=True -v mysql-db:/var/lib/mysql mysql```
+
+```docker volume ls```\
+will now display the new volume with a friendly name **mysql**, instead of a gigantic hash.
+
+A tip is to name the volume in respect to the project that you are working on. So that it is recognizable and user friendly.
+
+docker volume create: *required to do this before "docker run" to use custom drivers and labels*
+
+### Printing working directory on different OS
+
+* Powershell: ```${pwd}```
+* cmd.exe: ```%cd%```
+* bash, sh, zsh: ```$(pwd)```
+
+### Persistent Data: Bind Mounting
+
+* Maps a host file or directory to a container file or directory
+* Basically just two locations pointing to the same file(s)
+* Again, skips UFS, and host files overwrite any container
+* Can't use in Dockerfile, must be at ```container run```
+* ```... run -v /Users/aadne/stuff:/path/container``` (mac/linux)
+* ```... run -v //c/Users/aadne/stuff:/path/container``` (windows)
+
+### Persistent Data: Wrap up
+
+* Which type of persistent data allows you to attach an existing directory on your host to a directory inside of a container?
+  * ```Bind mounts```
+* When adding a bind mount to a docker run command, you can use the shortcut $(pwd), (or ${pwd} depending on your shell). What does that do?
+  * ```It runs the shell command to print the current working directory, to avoid having to type out the entirety of your directory location. pwd = print working directory```
+* When making a new volume for a mysql container, where could you look to see where the data path should be located in the container?
+  * ```Docker Hub - Looking through the README.md or Dockerfile of the mysql official image, you could find the database path documented or the VOLUME stanza (command)```
+
+### Assignment: Database Upgrades with Named Volumes
+
+Instructions:
+
+* Database upgrade with containers
+* Create a ```postgres``` container with named volume *psql-data* using version ```9.6.1```
+* Use Docker Hub to learn ```VOLUME``` path and versions needed to run it
+* Check logs, stop container
+* Create a new postgres container with same named volume using ```9.6.2```
+* Check logs to validate
+* *(this only works with patch versions, most SQL DB's require manual commands to upgrade DB's to major/minor versions, i.e it's a DB limitation not a container one)*
+
+My solution:
+
+* I made a volume using: ```docker volume create postgresql_db```
+* Then I ran the following command to connect postgresql:9.6.1 to the volume I just created:
+  * ```docker run --name postgresql_assignment -e POSTGRES_PASSWORD=mysecretpassword -d -v postgresql_db:/var/lib/postgresql/data postgres:9.6.1```
+* Then I printed the logs watching that the database initialized
+* I stopped the container
+* Then I ran the follwing command to connect postgresql:9.6.2 to the same volume:
+  * ```docker run --name postgresql_assignment_complete -e POSTGRES_PASSWORD=mysecretpassword -d -v postgresql_db:/var/lib/postgresql/data postgres:9.6.2```
+* Ran the command under and saw that the databank didn't need to setup from the beginning.
+
+```bash
+λ docker container logs postgresql_assignment_complete
+LOG:  database system was shut down at 2020-02-26 12:36:47 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+```
+
+### Assignment: Edit Code Running In Containers With Bind Mounts
+
+Instructions:
+
+* Use a Jekyll "Static Site Generator" to start a local web server.
+* Don't have to be web developer: this is example of bridging the gap between local file access and apps running in containers.
+* source code is in the course repo under ```bindmount-sample-1```
+* We edit files with editor on our host using native tools
+* Containers detects changes with host files and updates web server
+* start container with ```docker run -p 80:4000 -v $(pwd):/site bretfisher/jekyll-server```
+* Refresh our browser to see changes
+* Change the file in ```_posts\``` and refresh browser to see changes
+
+Solution:
+
+* Follow the instructions above.
+
+#### [Back to the top](#docker-mastery-course)
