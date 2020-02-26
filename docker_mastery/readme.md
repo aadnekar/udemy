@@ -11,7 +11,7 @@
     * [CLI Management](#docker-networks-cli-management)
       * [Default Security](#docker-networks-default-security)
     * [Domain Name System](#docker-networks-dns)
-    * [Assignment](#docker-networks:-assignments)
+    * [Assignment](#docker-networks-assignments)
 * [Container Images - where to find them and how to build them](#container-images)
   * [Docker Hub](#docker-hub)
   * [Images and their Layers](#images-and-their-layers)
