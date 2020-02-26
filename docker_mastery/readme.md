@@ -6,11 +6,11 @@
 
 * [Creating and Using Docker Containers](#docker-containers)
   * [Docker Networks](#docker-networks)
-    * [Concepts](#docker-networks:-concepts)
-    * [Defaults](#docker-networks:-defaults)
-    * [CLI Management](#docker-networks:-cli-management)
-      * [Default Security](#docker-networks:-default-security)
-    * [Domain Name System](#docker-networks:-dns)
+    * [Concepts](#docker-networks-concepts)
+    * [Defaults](#docker-networks-defaults)
+    * [CLI Management](#docker-networks-cli-management)
+      * [Default Security](#docker-networks-default-security)
+    * [Domain Name System](#docker-networks-dns)
     * [Assignment](#docker-networks:-assignments)
 * [Container Images - where to find them and how to build them](#container-images)
   * [Docker Hub](#docker-hub)
@@ -19,12 +19,12 @@
   * [Building Dockerfile](#building-dockerfile)
 * [Clean Yo System](#clean-yo-system)
 * [Container Lifetime & Persistent Data](#container-lifetime-&-persistent-data)
-  * [Persistent Data: Data Volumes](#persistent-data:-data-volumes)
+  * [Persistent Data: Data Volumes](#persistent-data-data-volumes)
   * [Printing working directory on different OS](#printing-working-directory-on-different-os)
-  * [Persistent Data: Bind Mounting](#persistent-data:-bind-mounting)
-  * [Persistent Data: Wrap up](#persistent-data:-wrap-up)
-  * [Assignment: Database Upgrades with Named Volumes](#assignment:-database-upgrades-with-named-volumes)
-  * [Assignment: Edit Code Running In Containers With Bind Mounts](#assignment:-edit-code-running-in-containers-with-bind-mounts)
+  * [Persistent Data: Bind Mounting](#persistent-data-bind-mounting)
+  * [Persistent Data: Wrap up](#persistent-data-wrap-up)
+  * [Assignment: Database Upgrades with Named Volumes](#assignment-database-upgrades-with-named-volumes)
+  * [Assignment: Edit Code Running In Containers With Bind Mounts](#assignment-edit-code-running-in-containers-with-bind-mounts)
 
 ## Docker Containers
 
@@ -32,7 +32,7 @@ Section 3 of the mastery course.
 
 ## Docker Networks
 
-### Docker Networks: Concepts
+### Docker Networks Concepts
 
 * Review of *docker container run -p*
 * For local dev/testing, networks usually "just work"
@@ -40,7 +40,7 @@ Section 3 of the mastery course.
 * Learn concepts of Docker Networking
 * Understand how network packets move around Docker
 
-### Docker Networks: Defaults
+### Docker Networks Defaults
 
 * Each container connected to a private virtual network "bridge"
 * Each virtual network routes through NAT firewall on host IP
@@ -84,7 +84,7 @@ Your routers IP-address is the *Default Gateway* value, whereas your computers I
 
 ![How docker networking works](static/docker_network.png)
 
-### Docker Networks: CLI Management
+### Docker Networks CLI Management
 
 * Show networks *docker network ls*
 * Inspect a network *docker network inspect*
@@ -116,7 +116,7 @@ docker container run -d --name new_nginx --network my_app_net nginx
 *docker network connect = Dynamically creates a NIC in a container on an existing virtual network*\
 *NIC = [Network Interface Controller](https://en.wikipedia.org/wiki/Network_interface_controller)*
 
-#### Docker Networks: Default Security
+#### Docker Networks Default Security
 
 * Create your apps so frontend/backend sit on same Docker network
 * Their inter-communication never leaves host
@@ -124,7 +124,7 @@ docker container run -d --name new_nginx --network my_app_net nginx
 * You must manually expose via -p, which is better default security!
 * This gets even better later with [Swarm](#swarm) and [Overlay](#overlay) networks.
 
-### Docker Networks: DNS
+### Docker Networks DNS
 
 How different containers find each other. It's generally a bad idea to rely on IP's because they may change if you restart containers in different orders. Thus it's very handly to able to reference containers by their container name rather than their IP's.\
 *DNS = [Domain Name System](https://en.wikipedia.org/wiki/Domain_Name_System)*
@@ -138,9 +138,9 @@ How different containers find each other. It's generally a bad idea to rely on I
 Built in solution to handle it:\
 *Docker DNS = Docker daemon has a built-in DNS server that containers use by defauly.*
 
-### Docker Networks: Assignements
+### Docker Networks Assignements
 
-#### Docker Networks: CLI App Testing
+#### Docker Networks CLI App Testing
 
 * Use different Lunix distro containers to check *curl* cli tool version
 * Use two different terminal windows to start bash in both centos:7 and ubuntu:14.04, using -it
@@ -150,7 +150,7 @@ Built in solution to handle it:\
   * centos: yum update curl
 * Check *curl --version*
 
-#### Docker Networks: DNS Round Robin Test
+#### Docker Networks DNS Round Robin Test
 
 * Ever since Docker Engine 1.11, we can have multiple containers on a created network respons to the same DNS address.
 * Create a new virtual network (default bridge driver).
@@ -271,7 +271,7 @@ Brief information:
 * Volumes: make special location outside of container UFS
 * Bind Mounts: link container path to host path
 
-### Persistent Data: Data Volumes
+### Persistent Data Data Volumes
 
 * Volumes need manual deletion. The data inside is particularily important (That's what we say by putting it there).
 * Volumes outlive the executables. (If you delete containers, they still persist).
@@ -295,7 +295,7 @@ docker volume create: *required to do this before "docker run" to use custom dri
 * cmd.exe: ```%cd%```
 * bash, sh, zsh: ```$(pwd)```
 
-### Persistent Data: Bind Mounting
+### Persistent Data Bind Mounting
 
 * Maps a host file or directory to a container file or directory
 * Basically just two locations pointing to the same file(s)
@@ -304,7 +304,7 @@ docker volume create: *required to do this before "docker run" to use custom dri
 * ```... run -v /Users/aadne/stuff:/path/container``` (mac/linux)
 * ```... run -v //c/Users/aadne/stuff:/path/container``` (windows)
 
-### Persistent Data: Wrap up
+### Persistent Data Wrap up
 
 * Which type of persistent data allows you to attach an existing directory on your host to a directory inside of a container?
   * ```Bind mounts```
@@ -313,7 +313,7 @@ docker volume create: *required to do this before "docker run" to use custom dri
 * When making a new volume for a mysql container, where could you look to see where the data path should be located in the container?
   * ```Docker Hub - Looking through the README.md or Dockerfile of the mysql official image, you could find the database path documented or the VOLUME stanza (command)```
 
-### Assignment: Database Upgrades with Named Volumes
+### Assignment Database Upgrades with Named Volumes
 
 Instructions:
 
@@ -344,7 +344,7 @@ LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
 ```
 
-### Assignment: Edit Code Running In Containers With Bind Mounts
+### Assignment Edit Code Running In Containers With Bind Mounts
 
 Instructions:
 
