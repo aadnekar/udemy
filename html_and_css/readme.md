@@ -13,6 +13,7 @@
 * [Semantic Tags](#semantic-tags)
 * [CSS syntax](#css-syntax)
 * [Fonts in CSS](#fonts-in-css)
+* [Colors in CSS](#colors-in-css)
 
 ## Introduction
 
@@ -107,3 +108,28 @@ Pointers:
 
 ![CSS units](static/units.png)
 ![CSS units cont.](static/more_units.png)
+
+## Colors in CSS
+
+Properties:
+
+* color: *The color of text*
+* background-color: *The color of some background*
+* border-color: *the color of the border of some element*
+
+Values:
+
+* Named colors: e.g. red or coral.
+* rgb: (red, green, blue) - where each is a value between 0 to 255.
+* Hexadecimal: #000000 - 0-f corresponding to red green blue - from 0-255 for each of the colors.
+
+## Backgrounds and Borders
+
+* .jpgs can't be transparent - use .png for transparancy
+* border-width:
+* border-color:
+* border-style:
+* border-radius: *rounds the corner (top-left top-right bottom-right bottom-left)*
+* background-repeat: (repeat, repeat-x, repeat-y, round, no-repeat) *repeats the image*
+
+## Box Model with Margin & Padding
