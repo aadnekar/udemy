@@ -14,6 +14,7 @@
 * [CSS syntax](#css-syntax)
 * [Fonts in CSS](#fonts-in-css)
 * [Colors in CSS](#colors-in-css)
+* [Float and Align](#float-and-align)
 
 ## Introduction
 
@@ -133,3 +134,18 @@ Values:
 * background-repeat: (repeat, repeat-x, repeat-y, round, no-repeat) *repeats the image*
 
 ## Box Model with Margin & Padding
+
+## Float and Align
+
+* Float was used before flex-box
+
+## Link State & Button Styling
+
+* a element is the proper link element
+* a:hover to change properties when mouse hovers over the link
+* a: visited to change the properties after the link has been visited (not much used)
+* a:active when clicking it the properties may be changed (also not much used)
+
+## Position
+
+![Position values](static/position.png)

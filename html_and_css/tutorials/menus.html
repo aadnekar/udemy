@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Styling</title>
+  <style>
+    body {
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+    /* Navbar Styling */
+    .navbar {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: #740000;
+      border-radius: 5px;
+      overflow: auto;
+    }
+
+    .navbar li {
+      float: left;
+    }
+
+    /*
+    Sometimes ppl take the padding on the li element, but then the hovering won't
+    effect the whole background area for the background-color, which isn't as cool
+    */
+    .navbar li a {
+      display: block;
+      color: #cb9999;
+      text-decoration: none;
+      padding: 15px 20px;
+    }
+
+    .navbar li a:hover {
+      background-color: #cb9999;
+      color: #740000;
+    }
+
+
+    /* Side Menu */
+    .side-menu {
+      list-style: none;
+      border: 2px #650000 solid;
+      border-radius: 10px;
+      width: 300px;
+      padding: 20px;
+    }
+
+    .side-menu li {
+      font-size: 18px;
+      line-height: 2.4em;
+      border-bottom: dotted 1.5px #650000;
+    }
+
+    /* Very cool! */
+    .side-menu li:last-child {
+      border: none;
+    }
+
+    .side-menu li a {
+      color: #190000;
+      text-decoration: none;
+    }
+
+    .side-menu li a:hover {
+      color: #cb9999
+    }
+
+  </style>
+</head>
+<body>
+  <ul class="navbar">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <ul class="side-menu">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</body>
+</html>
