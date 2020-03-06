@@ -25,6 +25,8 @@
   * [Persistent Data: Wrap up](#persistent-data-wrap-up)
   * [Assignment: Database Upgrades with Named Volumes](#assignment-database-upgrades-with-named-volumes)
   * [Assignment: Edit Code Running In Containers With Bind Mounts](#assignment-edit-code-running-in-containers-with-bind-mounts)
+* [Docker Compose](#docker-compose)
+  * [docker-compose.yml](#docker-compose.yml)
 
 ## Docker Containers
 
@@ -360,5 +362,62 @@ Instructions:
 Solution:
 
 * Follow the instructions above.
+
+## Docker Compose
+
+* Configure relationships between containers.
+* Save our docker container run settings in easy-to-read file.
+* Create one liner developer environment startups.
+* Comrpise of 2 separate but realted things:
+  1. YAML-formatted file that describes our solution options for:
+    * containers
+    * networks
+    * volumes
+  2. A CLI tool ```docker-compose``` used for local dev/test automation with those YALM files.
+
+#### docker-compose.yml
+
+* **version**: Have to be included (or should at least): If no version is specified it assumes version 1.
+  * **Services**: Is actually containers. Same as docker run.
+    * *servicename*: Specifiec the name of the service: it's also a DNS name inside network.
+    * *image*: Is optional if you use build:
+    * *command*: Is Optional, replaces the default CMD specified by the specified image.
+    * *environment*: Optional, same as -e in docker run (set environment variables).
+    * *volumes*: Optional, same as -v in docker run (Binds mount to a volume)
+* **volumes**: Optional, same as docker volume create
+* **network**: Optional, same as docker network create
+
+#### docker-compose CLI
+
+* Not a production-grade tool but ideal for local development and test
+* Two most common commands:
+  * ```docker-compose up``` #Runs EVERYTHING in the docker-compose file specified (-f docker-compose.yml default) Meaning it sets up volumes/networks and starts all containers (services).
+  * ```docker-compose up``` #Stops all containers and rmove cont/vol/net
+* If all your projects had a ```Dockerfile``` and ```docker-compose.yml``` then "new developer onboarding" would be:
+
+  ```bash
+  git clone github.com/some/software
+  docker-compose up
+  ```
+
+#### Using Compose to Build
+
+* Compose can also build your custom images.
+* Will build them with docker-compose up if not found in cache.
+* Also rebuild with ```docker-compose build```.
+* Great for complex builds that have lots of variables or build arguments.
+
+An example of how to specify a build in docker-compose.yml
+
+```yml
+services:
+  servicename:
+    build:
+      context: . # Tells it that the file will by found in the current dir
+      dockerfile: something.Dockerfil # Specifies the name of the Dockerfile
+    image: something-custom # Specifies the container name.
+```
+
+Good practice to use the ```docker-compose down --rmi local``` when developing locally, this is so that the auto generated images are not clustered. However, if you've set the ```image``` as above, it will not be deleted using the above command, which is a good thing.
 
 #### [Back to the top](#docker-mastery-course)
