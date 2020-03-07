@@ -160,3 +160,56 @@ Values:
 
 Compared to ```display: inline```, the ```display: inline-block``` lets you set a width and height on the element. Furthermore, the inline top and bottom margins and paddings are not respected, whereas they are with the inline-block elements.
 A great advantage to getting the inline-block is that it allows us to create side-by-side boxes that collapse and wrap properly depending on available space in the parent element. Before this had to be done using floats.
+
+## Flex
+
+![Flex Image](static/flex.png)
+
+* Use ```display: flex```: which creates a flex container.
+* All direct child elements are ```flex items```
+
+Properties for the ```display:flex```
+
+* ```justify-content:``` Align along the main axis (default horizontal).
+* ```align-items:``` Align items along the cross axis (default vertical).
+* ```align-content:``` Align when extra space in cross axis.
+* ```flex-direction: column``` Change the main and cross axis, meaning vertical is now main and horizontal is now cross axis. (Row is default and means main axis=row, opposite for column ).
+
+```css
+/* Options for justify-content */
+display: flex; /* The container element has to be a flex container */
+justify-content: flex-start; /* The default, justifies to the left */
+justify-content: flex-end; /* Justifies to the right */
+justify-content: center; /* Justifies the child elements to the center */
+justify-content: space-around; /* Divides space around each child element */
+justify-content: space-between; /* All space divided inbetween the child elements */
+justify-content: space-evenly; /* Distributes the space evently on the sides and inbetween */
+
+/* Options for the align-items */
+align-items: stretch; /* The default, stretches the child elements to fit the height */
+align-items: flex-start; /* Justifies the child elements at the beginning of the cross-axis */
+align-items: flex-end; /* Justifies the child elements at the end of the cross-axis */
+align-items: center; /* Justifies the child elements at the center of the cross-axis */
+align-items: baseline; /* Quite similar to flex-start, see below for Stack Overflow question about the difference */
+
+/* Options for the align-content */
+align-content: stretch; /* Stretch the space in the main axis-direction evenly. */
+align-content: flex-start; /* Fills space from beginning, and leavs all space at the end of the main axis. */
+align-content: flex-end; /* Same as start but at the end of the main-axis */
+align-content: center; /* Sets the lines at the center. */
+align-content: space-around; /* Distribute the space evenly around the lines */
+align-content: space-between; /* Distribute space evenly between lines, but not at the edges */
+```
+
+* You can also target a single child element or a cluster of them and use the property ```align-self:``` to easily manage the position of the child element inside the flex container.
+* The values that can be set to the *align-self* property:
+  * ```auto``` (default)
+  * ```stretch```
+  * ```center```
+  * ```flex-start```
+  * ```flex-end```
+  * ```baseline```
+  * ```initial```
+  * ```inherit```
+
+[Link to Stack Overflow for further info on the difference between flex-start and baseline](https://stackoverflow.com/questions/34606879/whats-the-difference-between-flex-start-and-baseline)
