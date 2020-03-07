@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vh & Vw Units</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    header {
+      background: #333 url('./../img/puppy22.jpg') no-repeat center center/cover;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      padding-top: 2rem;
+    }
+
+    header h1 {
+      font-size: 3rem;
+    }
+
+    header p {
+      margin: 1rem 0;
+    }
+
+    .btn {
+      display:inline-block;
+      text-decoration: none;
+      background: #f4f4f4;
+      color: #333;
+      padding: 0.75rem 2rem;
+      border: solid 1px #333;
+    }
+
+    .btn:hover {
+      background: #ffcccc;
+    }
+
+    section {
+      padding: 2rem;
+    }
+
+    @media(max-height: 450px) {
+      header {
+        padding-top: 4rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome To Our Website</h1>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo voluptatem, libero quo minima fuga obcaecati.</p>
+    <a href="#" class="btn">Find Out More</a>
+  </header>
+
+  <section>
+    <h3>About Our Company</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis blanditiis veritatis tempora rem at quia ullam laborum quos ipsum, aliquid enim delectus modi, libero exercitationem totam corporis consequuntur natus reiciendis voluptate ex magnam! Eos praesentium sapiente alias assumenda, ipsam explicabo quam, a corporis reiciendis expedita, odio voluptatibus consectetur repudiandae cum.</p>
+  </section>
+  
+</body>
+</html>

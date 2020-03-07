@@ -149,3 +149,14 @@ Values:
 ## Position
 
 ![Position values](static/position.png)
+
+## Viewport Height & Viewport Width
+
+* The height and width is always divided into 100 units.
+* An element can be set to take up everything from 0 to 100 units.
+* Most common to use vh (viewport height), because a lot of elements stretch out all the width anyways.
+
+## Inline Vs Inline-Block
+
+Compared to ```display: inline```, the ```display: inline-block``` lets you set a width and height on the element. Furthermore, the inline top and bottom margins and paddings are not respected, whereas they are with the inline-block elements.
+A great advantage to getting the inline-block is that it allows us to create side-by-side boxes that collapse and wrap properly depending on available space in the parent element. Before this had to be done using floats.

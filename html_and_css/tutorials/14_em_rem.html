@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Em & Rem Units</title>
+  <style>
+
+    #box-1 {
+      font-size: 20px;
+    }
+
+    #box-1 p {
+      font-size: 1.5em;
+      /* Will actually be 20px * 1.5 due to the font-size set above
+      and is a good reason why some people choose not to use em*/
+      padding: 1em;
+    }
+
+    #box-1 ul {
+      font-size: 1.2em;
+      /* The nested ul's get bigger and bigger... */
+    }
+
+    html {
+      /* A lot of people choose to set the html font size to 10, since it's
+      easier to calculate the results when using rem. */
+      font-size:10px;
+    }
+
+    #box-2 h3 {
+      font-size: 2rem;
+    }
+
+    #box-2 p {
+      font-size: 1.6rem;
+      line-height: 1.7rem;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- <div id="box-1">
+    <h3>Box One</h3>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse quaerat, expedita cupiditate eum deserunt cumque quod beatae nemo maxime iusto!</p>
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3
+            <ul>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+          </li></li>
+        </ul>
+      </li>
+      <li>4</li>
+    </ul>
+  </div> -->
+  <div id="box-2">
+    <h3>Box Two</h3>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse quaerat, expedita cupiditate eum deserunt cumque quod beatae nemo maxime iusto!</p>
+  </div>
+</body>
+</html>
