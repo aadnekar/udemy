@@ -27,6 +27,12 @@
   * [Assignment: Edit Code Running In Containers With Bind Mounts](#assignment-edit-code-running-in-containers-with-bind-mounts)
 * [Docker Compose](#docker-compose)
   * [docker-compose.yml](#docker-compose.yml)
+* [Swarm](#swarm)
+  * [Swarm Mode](#swarm-mode)
+  * [Swarm Usage](#swarm-usage)
+  * [Notable Features in the CLI](#notable-features-in-the-cli)
+  * [Creating a 3-node Swarm](#creating-a-3-node-swarm)
+  * [Quiz on Swarm Mode Basics](#quiz-on-swarm-mode-basics)
 
 ## Docker Containers
 
@@ -375,7 +381,7 @@ Solution:
     * volumes
   2. A CLI tool ```docker-compose``` used for local dev/test automation with those YALM files.
 
-#### docker-compose.yml
+### docker-compose.yml
 
 * **version**: Have to be included (or should at least): If no version is specified it assumes version 1.
   * **Services**: Is actually containers. Same as docker run.
@@ -419,5 +425,129 @@ services:
 ```
 
 Good practice to use the ```docker-compose down --rmi local``` when developing locally, this is so that the auto generated images are not clustered. However, if you've set the ```image``` as above, it will not be deleted using the above command, which is a good thing.
+
+## Swarm
+
+* How to automate container lifecycle?
+* How may we easily scale out/in/up/down?
+* How may we ensure our containers are re-created if they fail?
+* How may we replace containers without downtime (blue/green deploy)?
+* How may we control/track where containers get started?
+* How may we create cross-node virtual networks?
+* How may we ensure only trusted servers run our containers?
+* How may we store secrets, keys, passwords and get them to the right container (and only that container)?
+
+### Swarm Mode
+
+A built-in orchestration that was released in 2016 via the SwarmKit toolkit.
+
+Pictures to describe how Swarm works:
+
+![Swarm basic architecture](./static/swarm-architecture.png)
+Manager Nodes: DB locally on them - raft db - stores config and info.
+Worker Nodes:
+Earlier each of these would be VMs or something similar.
+![Swarm basic architecture](./static/swarm-architecture2.png)
+Managers may be workers themselves, and nodes can be promoted and denoted.
+![Swarm basic architecture](./static/swarm-containers.png)
+New concept of how our containers look like. With the ```docker Run``` command we could really only deploy one container at a time. Swarm replaces the docker run command with the ```docker service``` command, which allows us to add extra features when we run it, like add extra containers (which are called tasks now). In the picture above we've said we want to spin up nginx and that we want three replicas of it.
+![Swarm basic architecture](./static/swarm-managers.png)
+
+### Swarm Usage
+
+How Initialize Docker Swarm: ```docker swarm init```.
+
+* Lots of PKI ([public key infrastructure](https://en.wikipedia.org/wiki/Public_key_infrastructure)) and security automation.
+  * Root Signing Certificate created for our Swarm.
+  * Certificate is issued for first Manager node.
+  * Join tokens are created.
+* Raft database created to store root CA ([certification authority](https://en.wikipedia.org/wiki/Certificate_authority)), configs and secrets.
+  * Encrypted by default on disk (1.13+).
+  * No need for another key/value system to hold orchestration/secrets.
+  * Replicates logs amongst Managers via mutual TLS ([transport layer security](https://en.wikipedia.org/wiki/Transport_Layer_Security)) in "control plane".
+
+#### Notable features in the CLI
+
+```bash
+docker swarm --help
+docker node --help
+docker service --help
+```
+
+Adding a service:
+
+```bash
+docker service create [OPTIONS] <image> [COMMAND] [ARG...] # General
+docker service create alpine ping 8.8.8.8 # Specific command which creates a service
+docker service ls # prints the services that are running
+# ID | NAME | MODE | REPLICAS | IMAGE | PORTS
+# currently the REPLICAS = 1/1, 1 container running & 1 container specified
+docker service ps <SERVICE> # prints the tasks(containers) running on the service(s)
+# ID | NAME | IMAGE | NODE | DESIRED STATE | CURRENT STATE | ERROR | PORTS
+docker container ls # prints the currently running containers (and tasks)
+docker service update <SERVICE> --replicas 3 # Would scale up the specified service(s) with three replicas
+docker service ls # Now shows the same serice as before with REPLICAS=3/3
+docker service ps <SERVICE> #prints all three tasks of the service
+```
+
+What is very interesting about docker Swarm if that if you'd force remove a container(task) ```docker container rm -f <CONTAINER ID>``` the container would be removed and you'd for example see ```REPLICAS=2/3``` if you had three replicas specified (like in the example above). But within a few seconds the service would have started a new task so that if you'd run ```docker service ps <SERVICE>``` again you'd see ```REPLICAS=3/3``` again. This is due to the orchatration of swarm, meaning that you don't actually run a specific command yourself, but you ask the orchestrator to run the command at it's earliest convinience. Meaning that if you'd like to remove all the tasks/containers running you would have to remove the service, like so ```docker service rm <SERVICE>```.
+
+### Creating a 3-node Swarm
+
+#### Options for host
+
+I will be using Digital Ocean.
+
+1. play-with-docker.com
+  * only needs a browser, but resets after 4 hours
+2. docker-machine + VirtualBox
+  * Free and runs locally, but requires a machine with 8GB memory
+3. Digital Ocean + Docker install
+  * Most like a production setup, but costs $5-10/node/month while learning
+4. Roll your own
+  * docker-machine can provision machines for Amazon, Azure, DO, Google, etc.
+  * Install docker anywhere with get.docker.com
+
+The actual walk through of setting up the nodes.
+
+```bash
+# I've got three terminals, one for each resource on Digital Ocean: Node1 | Node2 | Node3
+# First Init Swarm for Node1:
+docker swarm init <IP-ADDRESS> #IP Address will be set to the shared one for the droplet on DigitalOcean
+# Init Swarm for Node2 to join:
+docker swarm join --token <TOKEN> <IP>:<PORT> # Copied from the message after init above on node1
+# docker swarm join defaults the node to a worker, and as a worker you cannot use docker node commands.
+# To promote node2 to a manager we can use:
+docker node update --role manager node2 # node2 is set to reachable, but node1 is still leader.
+# To make node3 a manager from the get-go, you can use
+docker swarm join-token manager # (option worker) | prints the join command for a manager node. These are saved encrypted in the raft db as configurations. You can also rotate these keys if there is any need for it, say there has been a breach in the server or something similar.
+# Paste this command into node3's terminal:
+docker swarm join --token <TOKEN> <IP>:<PORT>
+
+# Now we can try to go though the service example above with the 3-node setup:
+docker service create --replicas 3 alpine ping 8.8.8.8
+docker service ls # Prints the running service with: REPLICAS=3/3.
+docker service ps <SERVICE> # Prints all running tasks in the service.
+docker node ps # node1: prints only the first task(container) running on that specific node.
+docker node ps node2 # node1: prints only the running task on that specified node (node2).
+docker service ps <SERVICE> # prints a full list of running tasks(containers) across the nodes.
+
+```
+
+* Just figured out that ```docker node ps``` is equivalent to ```docker container ps```
+
+#### Quiz on Swarm Mode Basics
+
+How to we initially begin a Swarm, activating Swarm Mode on a single node?
+
+* ```docker swarm init```
+
+To scale up a service to multiple containers, which of the following commands would you use?
+
+* ```docker service update <SERVICE> --replicas <uint>``` number of tasks to scale
+
+Once a node joins a swarm as a worker, it would have to leave the swarm and re-join to become a manager.
+
+* ```False``` Use the ```docker node update --role``` command.
 
 #### [Back to the top](#docker-mastery-course)
