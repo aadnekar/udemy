@@ -33,6 +33,10 @@
   * [Notable Features in the CLI](#notable-features-in-the-cli)
   * [Creating a 3-node Swarm](#creating-a-3-node-swarm)
   * [Quiz on Swarm Mode Basics](#quiz-on-swarm-mode-basics)
+* [Swarm Basic Features](#swarm-basic-features)
+  * [Overlay Multi-Host Networking](#overlay)
+  * [Scaling Out With Routing Mesh](#routing-mesh)
+  * [Quiz Swarm Basics](#quiz-swarm-basics)
 
 ## Docker Containers
 
@@ -549,5 +553,93 @@ To scale up a service to multiple containers, which of the following commands wo
 Once a node joins a swarm as a worker, it would have to leave the swarm and re-join to become a manager.
 
 * ```False``` Use the ```docker node update --role``` command.
+
+## Swarm Basic Features
+
+### Overlay
+
+* Overlay is a Multi-Host Network
+* Just choose ```--driver overlay``` when creating network
+* Just containet-to-container traffic inside a single Swarm
+* Optional IPSec (AES) encryption on network creation
+* Each service can be connected to multiple networks
+  * (e.g. front-end, back-end)
+
+Example
+
+```bash
+# Logged into node1 from the Swarm example above.
+# I simply run ssh node1 into the virtual machine.
+ssh node1
+
+# Setting up the overlay network
+root@node1:~ docker network create --driver overlay mydrupal
+root@node1:~ docker network ls # Will print all available networks including mydrupal
+
+# Creating a postgres service
+root@node1:~ docker service create --name psql --network mydrupal -e POSTGRES_PASSWORD=mypass postgres
+root@node1:~ docker service ls # Prints the psql service with REPLICAS=1/1
+root@node1:~ docker service ls psql # Prints info about the service
+
+# Creating a drupal service
+root@node1:~ docker service create --name drupal --network mydrupal -p 80:80 drupal
+root@node1:~ docker service ls # Monitor the REPLICAS 1/1 for drupal
+root@node1:~ docker service ps drupal # Notice drupal is run on node 2 and not node 1 like psql is run on.
+
+# Tip ubuntu comes with a \watch\ command so that you can monitor a command
+watch docker service ls # Will rerun the same command over so that you can monitor it.
+```
+
+After setting up the two services you can enter the ip address of any of the nodes in the url to set up drupal just like we have done earlier on our local machine. What this illustrates is that it's able to communnicate with the database across the nodes and set up the system.
+
+The big question is how can you enter any of the node ip addresses and get access to the drupal service. This will be answered in the next section:
+
+### Routing Mesh
+
+* Routes ingress (incoming) packets for a Service to proper Task
+* Spans all nodes in Swarm
+* Uses [IPVS](https://en.wikipedia.org/wiki/IP_Virtual_Server) from Linux Kernel
+* [Load balances](https://en.wikipedia.org/wiki/Load_balancing_(computing)) Swarm Services across their Tasks
+* Two ways this works:
+  * Container-to-container in an Overlay netowrk (uses VIP ((virtual IP)))
+  * External traffic incoming to published ports (all nodes listen)
+* It's a stateless load balancing
+* The load balancer is at OSI Layer 3 (TCP), not Layer 4 (DNS)
+  * Just a problem if you would run multiple websites on the same port on the same server. You would need something on top of that to route these ingresses.
+  * A solution would be to run Nginx or HAProxy LB proxy in the foreground to take care of the statefull load balancing, or:
+  * Docker Enterprise Edition, which comes with built-in L4 web proxy.
+
+![Swarm Routing Mesh](static/swarm-mesh.png)
+
+![Swarm Routing Mesh](static/swarm-mesh-ingress.png)
+
+Routing Mesh in Action:
+
+```bash
+root@node1:~ docker service create --name search --replicas 3 -p 9200:9200 elasticsearch:2
+
+root@node1:~ docker service ps search # Will display the distribution over our three nodes.
+
+root@node1:~ curl localhost:9200 # Display "name": "Cannonball"
+root@node1:~ curl localhost:9200 # Display "name": "Capricorn"
+root@node1:~ curl localhost:9200 # Display "name": "Stuntmaster"
+root@node1:~ curl localhost:9200 # Display "name": "Cannonball" and so on...
+```
+
+#### Quiz Swarm Basics
+
+1. What is the swarm-wide bridge network driver where containers can communicate across nodes?\
+```Overlay```
+
+2. A service can be attached to many different networks at once.\
+```True```
+
+3. You need to manually choose and install a load balancer in order for Swarm to distribute incoming network connections evenly.\
+```False: The load balancer built-in to the overlay networking driver will do this job out of the box```
+
+4. If you have a 3 node swarm, with node names as follows: node1, node2, and node3. You run 'docker service create -p 8088:80 nginx' from node1. Which node and port can you visit in a web browser to see the 'Welcome to Nginx' message?\
+```Any of the 3 nodes:8088: In the default overlay netowrk, you can visit any nodeon port 8088 to see the NGINX welcome message.```
+
+#### [My solution on the swarm assignment](swarm-app-1/README.md#my-solution)
 
 #### [Back to the top](#docker-mastery-course)
