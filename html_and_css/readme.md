@@ -1,6 +1,6 @@
 # Modern HTML & CSS From The Beginning with Brad Traversy
 
-[You can find the course on udemy](https://www.udemy.com/course/modern-html-css-from-the-beginning/)
+[Click here to find the course on udemy](https://www.udemy.com/course/modern-html-css-from-the-beginning/)
 
 ## Content
 
@@ -15,6 +15,11 @@
 * [Fonts in CSS](#fonts-in-css)
 * [Colors in CSS](#colors-in-css)
 * [Float and Align](#float-and-align)
+* [Link State & Button Styling](#link-state-&-button-styling)
+* [Position](#position)
+* [Viewport Height & Viewport Width Units](#viewport-height-&-viewport-width)
+* [Inline Vs Inline-Block Property](#inline-vs-inline-block)
+* [Flex](#flex)
 
 ## Introduction
 
@@ -213,3 +218,5 @@ align-content: space-between; /* Distribute space evenly between lines, but not 
   * ```inherit```
 
 [Link to Stack Overflow for further info on the difference between flex-start and baseline](https://stackoverflow.com/questions/34606879/whats-the-difference-between-flex-start-and-baseline)
+
+[Back To The Top](#modern-html-&-css-from-the-beginning-with-brad-traversy)

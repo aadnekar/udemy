@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+}
+
+.container {
+    width: 99vw;
+    height:100vh;
+}
+
+#gingham {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    background-image:
+        linear-gradient(90deg, rgba(200, 0, 0, 0.5) 50%, transparent 0),
+        linear-gradient(0deg, rgba(200, 0, 0, 0.5) 50%, transparent 0);
+    background-size: 60px 60px;
+}
+
+#grid-1 {
+    width: 100%;
+    height: 100%;
+    background: #58a;
+    background-image:
+        linear-gradient(#fff 1px, transparent 0),
+        linear-gradient(90deg, #fff 1px, transparent 0);
+    background-size: 60px 60px;
+}
