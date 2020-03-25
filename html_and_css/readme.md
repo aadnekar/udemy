@@ -219,4 +219,48 @@ align-content: space-between; /* Distribute space evenly between lines, but not 
 
 [Link to Stack Overflow for further info on the difference between flex-start and baseline](https://stackoverflow.com/questions/34606879/whats-the-difference-between-flex-start-and-baseline)
 
+## Types of Hosting
+
+* Shared Hosting
+  * Cheapest ($3 - $15 per month)
+  * One account of many on a server
+  * Used for small websites
+  * Most include email, FTP, PHP, databases, software
+  * examples: Inmotion Hosting, Hostgator, Bluehost
+* VPS Hosting
+  * VPS = Virtual Private Server
+  * Your own virtualized server
+  * May create multiple shared accounts
+  * More access & privileges
+  * Everything shared hosting offers
+  * Ranges between $20 to $100 per month
+  * examples: Inmotion Hosting, Hostgator, Bluehost
+* Dedicated Server
+  * Your own actual server, rented server
+  * A rented physical machine
+  * Full access & privileges
+  * Harder to manage but very powerful
+  * Ranges from $100 to $400 per month
+  * examples: Inmotion Hosting, Hostgator, Bluehost
+* Reseller Hosting
+  * Very similar to VPS
+  * Can create & manage multiple shared accounts
+  * Can sell shared accounts to your own customers
+  * Usually comes with reseller software
+  * Ranges between $15 to $100 per month
+  * examples: Inmotion Hosting, Hostgator
+* Cloud Hosting
+  * Used for web apps
+  * Multiple servers work together
+  * Very scalable and great for large apps
+  * Not for beginners / harder to manage
+  * Pay as you go
+  * examples: Digital Ocean, Linode, Vultur
+* Static Hosting
+  * Does not come with bells and whistles of manged hosting
+  * Upload static site via Git
+  * Great for static websites
+  * Free, but pay for extra features
+  * examples: Netlify, Github Pages
+
 [Back To The Top](#modern-html-&-css-from-the-beginning-with-brad-traversy)
