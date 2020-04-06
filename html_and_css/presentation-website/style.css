@@ -1,0 +1,114 @@
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Chela+One&display=swap');
+
+/* Variables */
+:root {
+  --page-1-color: steelblue;
+  --page-2-color: tan;
+  --page-3-color: teal;
+  --page-4-color: slateblue;
+  --animate-speed: 2s;
+}
+
+body {
+  font-family: 'Chela One', cursive;
+  line-height: 1.4;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+
+/* Keyframe animations on the first slide. The rest of the slides are handled in JS */
+#page-1 h1 {
+  animation: heading var(--animate-speed) ease-out;
+}
+@keyframes heading {
+  0% {
+    transform: translateY(-1500px)
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+#page-1 p {
+  animation: paragraph var(--animate-speed) ease-out;
+}
+@keyframes paragraph {
+  0% {
+    transform: translateX(-1500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#page-1 .btn {
+  opacity: 0;
+  animation: btn-opacity var(--animate-speed) forwards ease-in;
+}
+@keyframes btn-opacity {
+  75% {
+    opacity: 10%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+/* Page Colors */
+#page-1 { background: var(--page-1-color);}
+#page-2 { background: var(--page-2-color);}
+#page-3 { background: var(--page-3-color);}
+#page-4 { background: var(--page-4-color);}
+
+/* Page common */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  padding: 0 4rem;
+}
+
+/* The h1 inside each page */
+.page h1 {
+  font-size: 4rem;
+  margin: 1rem;
+}
+
+.page p {
+  font-size: 1.3rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #f4f4f4;
+  color: #333;
+  text-decoration: none;
+  border: none;
+  margin-top: 1rem;
+  font-size: 1.3;
+
+  transition: all 0.3s ease-in;
+}
+
+.btn:hover,
+.btn-dark {
+  background: #333;
+  color: #fff;
+}
+
+.btn-dark:hover {
+  background-color: #f4f4f4;
+  color:#333;
+}

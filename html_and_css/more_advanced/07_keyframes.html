@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keyframes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #333;
+    }
+
+    .box {
+      background: #fff;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      /* animation-name: animate1;
+      animation-duration: 5s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      animation-delay: 2s;
+      animation-direction: alternate;
+      animation-timing-function: ease-in; */
+      animation: animate1 5s forwards 1s ease-in-out;
+    }
+
+    /* Learned about the keyframes, how to animate in CSS */
+
+    @keyframes animate1 {
+      from {
+        top:0;
+      }
+      to {
+        top: 300px;
+        width: 600px;
+        background-color: #f00;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+</body>
+</html>
